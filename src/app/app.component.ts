@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
+import { search, searchResultsLoaded, focusPhoto } from './actions';
 import { Photo } from './models/photo';
+import { AppState } from './shared/app-state';
 
 @Component({
   selector: 'app-root',
@@ -9,26 +13,23 @@ import { Photo } from './models/photo';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  searchTerm$: Observable<string>;
+  photos$: Observable<Photo[]>;
+  currentPhoto$: Observable<Photo | null>;
 
-  searchTerm = '';
-  photos: Photo[] = [];
-  currentPhoto: Photo | null = null;
-
-  constructor(private http: HttpClient) {}
+  constructor(
+    private store: Store<AppState>,
+  ) {
+    this.searchTerm$   = store.pipe(select('searchTerm'));
+    this.photos$       = store.pipe(select('photos'));
+    this.currentPhoto$ = store.pipe(select('currentPhoto'));
+  }
 
   handleSearch(searchTerm: string) {
-    // Make the JSONP request to Flickr
-    const encodedSearchTerm = encodeURIComponent(searchTerm);
-    const url = `http://api.flickr.com/services/feeds/photos_public.gne?tags=${encodedSearchTerm}&tagmode=all&format=json`;
-    this.http.jsonp(url, 'jsoncallback').subscribe((data: any) => {
-      this.searchTerm = searchTerm;
-      this.photos = data.items;
-      this.currentPhoto = null;
-    });
+    this.store.dispatch(search({ searchTerm }));
   }
 
   handleFocusPhoto(photo: Photo) {
-    this.currentPhoto = photo;
+    this.store.dispatch(focusPhoto({ photo }));
   }
-
 }
