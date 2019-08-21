@@ -16,7 +16,7 @@ export const reducers: ActionReducerMap<AppState> = {
   ),
   photos: createReducer(
     initialState.photos,
-    on(searchResultsLoaded, (_, { photos }) => photos), // FIXME Never called
+    on(searchResultsLoaded, (_, { photos }) => photos),
   ),
   currentPhoto: createReducer(
     initialState.currentPhoto,

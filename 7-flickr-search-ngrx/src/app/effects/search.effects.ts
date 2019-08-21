@@ -19,7 +19,7 @@ export class SearchEffects {
       ofType(search),
       mergeMap(({ searchTerm }) =>
         this.searchService.search(searchTerm).pipe(
-          map((photos) => searchResultsLoaded({ photos })), // FIXME Does not call reducer
+          map((photos) => searchResultsLoaded({ photos })),
         ),
       ),
     ),

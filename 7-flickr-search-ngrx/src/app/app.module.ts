@@ -36,7 +36,7 @@ import { SearchService } from './services/search.service';
       },
     }),
 
-    StoreDevtoolsModule.instrument({ // FIXME Devtools can't find store despite this
+    StoreDevtoolsModule.instrument({
       logOnly: false, // TODO Use environment.production
       maxAge: 50,
     }),
