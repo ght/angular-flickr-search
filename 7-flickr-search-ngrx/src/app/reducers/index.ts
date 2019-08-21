@@ -21,6 +21,6 @@ export const reducers: ActionReducerMap<AppState> = {
   currentPhoto: createReducer(
     initialState.currentPhoto,
     on(focusPhoto, (_, { photo }) => photo),
-    on(search, () => null), // FIXME TS error
+    on(search, (..._) => null),
   ),
 };
